@@ -1,0 +1,37 @@
+[
+  {
+    "username": "ronald.espinoza@mojix.com",
+    "meshes": [
+      {
+        "name": "Mesh-01",
+        "veeahubs": [
+          "C05BCB00C0A000001022",
+          "C05BCB00C0A000001023"
+        ]
+      },
+      {
+        "name": "Mesh-02",
+        "veeahubs": [
+          "C05BCB00C0A000001024",
+          "C05BCB00C0A000001025",
+          "C05BCB00C0A000001026"
+        ]
+      }
+    ]
+  },
+  {
+    "username": "jose.rioja@mojix.com",
+    "meshes": [
+      {
+        "name": "Mesh-03",
+        "veeahubs": [
+          "C05BCB00C0A000001027",
+          "C05BCB00C0A000001279",
+          "C05BCB00C0A000001280",
+          "C05BCB00C0A000001281",
+          "C05BCB00C0A000001282"
+        ]
+      }
+    ]
+  }
+]
