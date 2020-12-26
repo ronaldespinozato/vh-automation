@@ -16,9 +16,9 @@ class ManagerEnrollVeeaHub:
                 self.__enroll_mesh_veeahub(mesh, username)
                 print("")
 
-        response = EnrollmentClient().get_mesh_config(user['username'])
-        passed = UserConfigStatus().check_user_config_response_status_code(response)
-        print(passed)
+        # response = EnrollmentClient().get_mesh_config(user['username'])
+        # passed = UserConfigStatus().check_user_config_response_status_code(response)
+        # print(passed)
 
     def un_enroll_veeahubs(self):
         users = self.__read_users_from_resource()

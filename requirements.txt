@@ -6,3 +6,4 @@ robotframework==3.2.2
 urllib3==1.25.10
 mysql-connector-python==8.0.21
 elasticsearch>=2.0.0,<3.0.0
+robotframework-seleniumlibrary >= 3.3.1

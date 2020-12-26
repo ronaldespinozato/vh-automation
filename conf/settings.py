@@ -6,6 +6,9 @@ ENV_SUPPORT_USER_NAME = None
 ENV_SUPPORT_PASSWORD = None
 ENV_IMPERSONATED_USER_NAME = None
 
+def set_local_env():
+    global ENVIRONMENT
+    ENVIRONMENT = 'local'
 
 def set_env(env, impersonated_user):
     global ENVIRONMENT
@@ -19,7 +22,6 @@ def set_env(env, impersonated_user):
         ENVIRONMENT = 'qa'
     if env == 'prod':
         ENVIRONMENT = 'prod'
-
 
 class Config:
     config_json = None
@@ -54,6 +56,10 @@ class Config:
     def get_auth_base_url(self):
         conf = self.__get_config()
         return conf["services"]["auth"]["baseUrl"]
+
+    def get_certificate_base_url(self):
+        conf = self.__get_config()
+        return conf["services"]["certificate"]["baseUrl"]
 
     def get_auth_support_username(self):
         conf = self.__get_config()

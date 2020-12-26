@@ -20,23 +20,23 @@
     "enrollment":{
       "host": "localhost",
       "port": "3306",
-      "name": "enrollment_db",
-      "user": "root",
-      "password": "control123!"
+      "name": "",
+      "user": "",
+      "password": ""
     },
     "bootstrap":{
       "host": "localhost",
       "port": "3306",
-      "name": "bootstrap_db",
-      "user": "root",
-      "password": "control123!"
+      "name": "",
+      "user": "",
+      "password": ""
     },
     "acl":{
       "host": "localhost",
       "port": "3306",
-      "name": "acl_db",
-      "user": "root",
-      "password": "control123!"
+      "name": "",
+      "user": "",
+      "password": ""
     }
   },
   "elasticsearch": {

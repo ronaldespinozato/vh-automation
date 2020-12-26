@@ -23,6 +23,12 @@ class BootstrapDB:
                 where vh.serial_number in ('{}') and mesh_uuid is not null""".format(serial_numbers)
         return self.__get_query_result(query)
 
+    def get_mesh_by_id(self, mesh_id):
+        query = """SELECT uuid, serial_number, public_key, owner_uuid, configuration_key 
+                    FROM mesh m
+                    WHERE uuid = '{}'""".format(mesh_id)
+        return self.__get_query_result(query)
+
     def get_veeahub_by_serial_number(self, serial_number):
         query = """select serial_number, owner_uuid, mesh_uuid
                     from veea_hub vh
@@ -49,7 +55,12 @@ class BootstrapDB:
                     from veea_hub_configuration_data vhcd
                     where veea_hub_serial_number = '{veea_hub_serial_number}'
                     order by veea_hub_serial_number""".replace("{veea_hub_serial_number}", serial_number)
+        return self.__get_query_result(query)
 
+    def get_offered_software_veea_hub(self, serial_number):
+        query = """SELECT id, software_uuid, veea_hub_serial_number 
+                    FROM offered_software_veea_hub osvh
+                    WHERE veea_hub_serial_number = '{}'""".format(serial_number)
         return self.__get_query_result(query)
 
     def __get_query_result(self, query):

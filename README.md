@@ -14,14 +14,25 @@ After that you can use the command `$ which python` to display the location of y
 $ source env/bin/activate
 ~~~
 
-## Export a list of all installed packages
+## Leave, exist, deactivate virtual env
 ~~~
-$ python -m pip freeze > requirements.txt
+$ deactivate
 ~~~
 
 ## Install package from requirements file
 ~~~
 $ python -m pip install -r requirements.txt
+~~~
+
+## How execute test
+~~~
+$ cd vh-automation
+$ robot ./test/enrollment_veeahub.robot
+~~~
+
+## Export a list of all installed packages
+~~~
+$ python -m pip freeze > requirements.txt
 ~~~
 
 ## Install Roboframework

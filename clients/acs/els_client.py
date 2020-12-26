@@ -74,6 +74,50 @@ class ElasticSearchACS:
         veeahub_config_id = resource["relatedParty"][0]["id"]
         return self.get_configuration_by_id(veeahub_config_id)
 
+    def __get_package_resource_documents(self, field_name, value):
+        query = {
+            "query": {
+                "bool": {
+                    "must":
+                        [
+                            {"match": {"type": "VeeahubSoftwarePackage"}},
+                            {"nested": {
+                                "path": "resourceCharacteristic",
+                                "query": {
+                                    "bool": {
+                                        "must": [
+                                            {"match": {"resourceCharacteristic.name": "{}".format(field_name)}},
+                                            {"match": {"resourceCharacteristic.value.raw": "{}".format(value)}}
+                                        ]
+                                    }
+                                }
+                            }}
+                        ]
+                }
+            }
+        }
+        return self.elastic.search(index="resources", body=query)
+
+    def get_active_package_resource_documents(self):
+        return self.__get_package_resource_documents("packageActive", "true")
+    
+    def get_inactive_package_resource_documents(self):
+        return self.__get_package_resource_documents("packageActive", "false")
+    
+    def get_package_configuration_documents(self, list_ids):
+        query = {
+            "query": {
+                "bool": {
+                    "filter": {
+                        "ids": {
+                            "values": list_ids
+                        }
+                    }
+                }
+            }
+        }
+        return self.elastic.search(index="configurations", body=query)
+
     def __get_documents(self, documents):
         response = []
         for data in documents["hits"]["hits"]:
