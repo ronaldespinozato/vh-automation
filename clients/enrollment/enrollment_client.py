@@ -47,4 +47,4 @@ class EnrollmentClient:
         endpoint = "{}/enroll/device/{}".format(self.__config.get_enrollment_base_url(), serial_number)
         response = requests.delete(endpoint, headers=header_values)
         print(response.json())
-        return response.json()
+        return response

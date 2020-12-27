@@ -20,7 +20,11 @@ class EnrollmentDB:
         query = """SELECT id, owner_id, owner_cert_serial_number, email, realm 
                 FROM enrollment_db.`user` u 
                 WHERE u.email = '{}'""".format(user_name)
-        return self.__get_query_result(query)
+        data = self.__get_query_result(query)
+        if len(data) > 0:
+            return data[0]
+
+        return None
 
     def get_owner_by_id(self, owner_id):
         query = """SELECT id, owner_id, owner_cert_serial_number, email, realm 
@@ -37,7 +41,10 @@ class EnrollmentDB:
         query = """SELECT serial_number, user_id, `action`, status
                     FROM enrollment_db.enroll_status es 
                     WHERE serial_number = '{}'""".format(serial_number)
-        return self.__get_query_result(query)
+        data = self.__get_query_result(query)
+        if len(data) > 0:
+            return data[0]
+        return None
 
     def __get_query_result(self, query):
         cursor = self.db.cursor()

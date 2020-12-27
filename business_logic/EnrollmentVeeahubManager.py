@@ -22,7 +22,7 @@ def print(value):
     logger.console(value)
 
 
-class ManagerEnrollVeeaHub(TestCase):
+class EnrollmentVeeahubManager(TestCase):
 
     def __init__(self):
         super().__init__()
@@ -33,16 +33,12 @@ class ManagerEnrollVeeaHub(TestCase):
         self.resourceUtils = ResourceTestUtil()
         self.elasticsearch = ElasticSearchACS()
 
-    def unenroll_the_veea_hub(self, veea_hub_serial_number):
-        # self.client.start()
-        return 1
-
     def enroll_the_veea_hub_in_new_mesh(self, veea_hub_serial_number, user_name):
         veeahub = self.resourceUtils.get_veeahub_for_testing(veea_hub_serial_number)
         owner_id = None
         owner = self.enrollment_db.get_owner_data(user_name)
         if owner is not None:
-            owner_id = owner[0]["owner_id"]
+            owner_id = owner["owner_id"]
 
         mesh_name = "Mesh-" + veeahub["serialNumber"][-4:]
 
@@ -123,8 +119,7 @@ class ManagerEnrollVeeaHub(TestCase):
 
         # Check Veea hub status in enrollment_db
         veea_hub_status = self.enrollment_db.get_enroll_status_by_veea_hub(serial_number)
-        self.assertIsNotNone(veea_hub_status)
-        self.assertEqual(0, len(veea_hub_status), "VeeaHub status found. When the VeeaHub is enrolled, it should not " +
+        self.assertEqual(None, veea_hub_status, "VeeaHub status found. When the VeeaHub is enrolled, it should not " +
                          "have status in enrollment_db.enroll_status")
 
         self.check_asserts_for_enrolled_veeahub_in_elasticsearch(serial_number)

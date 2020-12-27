@@ -34,7 +34,10 @@ class BootstrapDB:
                     from veea_hub vh
                     where serial_number = '{serial_number}'""".replace("{serial_number}", serial_number)
 
-        return self.__get_query_result(query)
+        data = self.__get_query_result(query)
+        if len(data) > 0:
+            return data[0]
+        return None
 
     def get_veeahub_by_owner_uuid(self, owner_uuid):
         query = """select serial_number, owner_uuid, mesh_uuid
@@ -61,6 +64,12 @@ class BootstrapDB:
         query = """SELECT id, software_uuid, veea_hub_serial_number 
                     FROM offered_software_veea_hub osvh
                     WHERE veea_hub_serial_number = '{}'""".format(serial_number)
+        return self.__get_query_result(query)
+
+    def get_veea_hub_logs_by_serial_number(self, serial_number):
+        query = """SELECT *
+                FROM veea_hub_log vhl
+                WHERE veea_hub_serial_number = '{}'""".format(serial_number)
         return self.__get_query_result(query)
 
     def __get_query_result(self, query):
