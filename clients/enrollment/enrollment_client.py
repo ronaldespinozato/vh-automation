@@ -30,8 +30,8 @@ class EnrollmentClient:
         return response
 
     def get_user_access_info(self, username):
-        support_user_name = "support@veea.com"
-        support_password = "support123!"
+        support_user_name = "support@test.com"
+        support_password = "support.test123!"
         impersonated_email = username
 
         user = VeeaAuthorization().get_impersonated_user(support_user_name, support_password, impersonated_email)

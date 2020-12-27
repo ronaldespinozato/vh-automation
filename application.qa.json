@@ -1,13 +1,13 @@
 {
   "services": {
     "auth": {
-      "baseUrl": "https://qa-auth.veea.co",
-      "supportUserName": "support@veea.com",
-      "supportUserPassword": "support123!",
-      "impersonatedName": "andy.crellin@veea.com"
+      "baseUrl": "http://localhost",
+      "supportUserName": "support@test.com",
+      "supportUserPassword": "support.test123!",
+      "impersonatedName": "ronald.espinoza.to@gmail.com"
     },
     "acs": {
-      "baseUrl": "https://qa.veea.co/ac"
+      "baseUrl": "http://localhost/ac"
     },
     "bootstrap": {
       "baseUrl": "http://localhost:9020"
