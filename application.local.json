@@ -2,8 +2,8 @@
   "services": {
     "auth": {
       "baseUrl": "http://localhost:8080",
-      "supportUserName": "support@test.com",
-      "supportUserPassword": "support.test123!",
+      "supportUserName": "support@veea.com",
+      "supportUserPassword": "support123!",
       "impersonatedName": "ronald.espinoza@mojix.com"
     },
     "acs": {
