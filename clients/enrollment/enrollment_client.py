@@ -30,14 +30,12 @@ class EnrollmentClient:
         return response
 
     def get_user_access_info(self, username):
-        support_user_name = "support@test.com"
-        support_password = "support.test123!"
+        support_user_name = self.__config.get_auth_support_username()
+        support_password = self.__config.get_auth_support_password()
         impersonated_email = username
 
         user = VeeaAuthorization().get_impersonated_user(support_user_name, support_password, impersonated_email)
-        # print(user)
-        # token = user['accessToken']
-        # userId = user['veeaUserId']
+
         return user
 
     def un_enroll_veeahub(self, username, serial_number):
