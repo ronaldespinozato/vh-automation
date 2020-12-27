@@ -11,9 +11,21 @@ if [ $# -lt 3 ]; then
    exit 255
 fi
 
+SERVER=http://localhost:9020
+export VEEA_BOOTSTRAP_SERVER=$SERVER
+
 SIGN_CERT=$1
 SIGN_PRIV=$2
 
 ID=$3
 LOG=[{\"timestamp\":\"1543870871\",\"action\":\"CONTAINER-BOOTSTRAP\",\"message\":\"Starting\"}]
-source ./scripts/submit_log_events.sh $SIGN_CERT $SIGN_PRIV $ID $LOG
+export LOGS=$LOG
+
+REQ_URL="/devices/${ID}/logs"
+REQ_METHOD=POST
+
+BASEDIR=$(dirname "$0")
+executeScript="${BASEDIR}/send_request.sh"
+logTemplate="${BASEDIR}/logs.tmpl"
+
+envsubst < ${logTemplate} | ${executeScript} ${SIGN_CERT} ${SIGN_PRIV} ${REQ_URL} ${REQ_METHOD}

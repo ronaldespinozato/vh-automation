@@ -7,6 +7,8 @@ if [ $# -lt 4 ]; then
    echo "If the [request_json] argument is not specified, then it is read from stdin"
    exit 255
 fi
+BASEDIR=$(dirname "$0")
+executeScript="${BASEDIR}/request.tmpl"
 
 CERT=$1
 PRIV=$2
@@ -23,5 +25,5 @@ REQ_TIMESTAMP=$(curl -k -s $VEEA_BOOTSTRAP_SERVER/timestamp | awk -F"[,:}]" '{pr
 REQ_BODY=$( sed 's/^/    /g' "${5:-/dev/stdin}" )
 export REQ_URL REQ_METHOD REQ_TIMESTAMP REQ_BODY
 echo "Using key ${PRIV} and certificate ${CERT} to sign a ${REQ_METHOD} request to ${VEEA_BOOTSTRAP_SERVER}${REQ_URL}"
-envsubst < scripts/request.tmpl | openssl cms -sign -inkey ${PRIV} -signer ${CERT} \
+envsubst < ${executeScript} | openssl cms -sign -inkey ${PRIV} -signer ${CERT} \
   -outform DER -nosmimecap -nodetach -binary -noattr | curl --insecure -X ${REQ_METHOD} --form "request=@-" $VEEA_BOOTSTRAP_SERVER${REQ_URL} -i
