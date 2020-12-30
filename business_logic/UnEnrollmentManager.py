@@ -1,7 +1,8 @@
-# from clients.enrollment import enrollment_client
 from clients.enrollment.enrollment_client import EnrollmentClient
 from clients.enrollment.enrollment_db import EnrollmentDB
 from clients.bootstrap.bootstrap_db import BootstrapDB
+from clients.acs.els_client import ElasticSearchACS
+from clients.redis.redisclient import RedisClient
 from unittest import TestCase
 from robot.api import logger
 
@@ -10,12 +11,14 @@ class UnEnrollmentManager(TestCase):
 
     def __init__(self):
         super().__init__()
-        self.enrollmentClient = EnrollmentClient()
+        self.enrollment_client = EnrollmentClient()
         self.enrollment_db = EnrollmentDB()
         self.bootstrap_db = BootstrapDB()
+        self.elasticsearch = ElasticSearchACS()
+        self.redis = RedisClient()
 
     def un_enrollment_veea_hub(self, serial_number, user_name):
-        response = self.enrollmentClient.un_enroll_veeahub(user_name, serial_number)
+        response = self.enrollment_client.un_enroll_veeahub(user_name, serial_number)
         return response
 
     def should_return_status_code_200_after_un_enrollment(self, response):
@@ -27,12 +30,17 @@ class UnEnrollmentManager(TestCase):
         self.assertTrue(meta["message"].find("has been successfully unenrolled"))
 
     def data_in_database_should_be_cleaned(self, serial_number, user_name):
+        self.check_assert_in_databases_after_un_enrollment_veea_hub(serial_number, user_name)
+        self.check_assert_in_elasticsearch_after_un_enrollment_veea_hub(serial_number, user_name)
+        self.check_assert_in_redis_after_un_enrollment_veea_hub(serial_number)
+
+    def check_assert_in_databases_after_un_enrollment_veea_hub(self, serial_number, user_name):
         status = self.enrollment_db.get_enroll_status_by_veea_hub(serial_number)
         owner = self.enrollment_db.get_owner_data(user_name)
         self.assertEqual(None, status,
                          "The VeeaHub status exist in enrollment_db, it should empty for " + serial_number)
-        # self.assertEqual(None, owner, "The Owner data exist in enrollment_db.user, it should be empty for {}"
-        #                               " because it is the last VeeaHub in the Mesh".format(user_name))
+        self.assertTrue(owner is not None, "The Owner data should exist in enrollment_db.user for {} "
+                                           "because it is the last VeeaHub in the Mesh".format(user_name))
 
         offered_software = self.bootstrap_db.get_offered_software_veea_hub(serial_number)
         self.assertTrue(len(offered_software) == 0, "Software was not offered to VeeaHub in "
@@ -50,4 +58,13 @@ class UnEnrollmentManager(TestCase):
         veea_hub_logs = self.bootstrap_db.get_veea_hub_logs_by_serial_number(serial_number)
         # self.assertEqual(0, len(veea_hub_logs), "The Veeahub {} contains logs in bootstrap_db.veea_hub_log,"
         #                                         " it should be empty".format(serial_number))
+
+    def check_assert_in_elasticsearch_after_un_enrollment_veea_hub(self, serial_number, user_name):
+        data = self.elasticsearch.get_veeahub_resource_by_serial_number(serial_number)
+        self.assertTrue(len(data) == 0, "EnrollmentVeeahub Resource was found in elasticsearch into index resource")
+
+    def check_assert_in_redis_after_un_enrollment_veea_hub(self, serial_number):
+        exist = self.redis.exist_key_for_veea_hub(serial_number)
+        self.assertFalse(exist, "There is an entry in Redis for VeeaHub {}".format(serial_number))
+
 

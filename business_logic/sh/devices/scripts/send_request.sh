@@ -24,6 +24,6 @@ REQ_METHOD=$4
 REQ_TIMESTAMP=$(curl -k -s $VEEA_BOOTSTRAP_SERVER/timestamp | awk -F"[,:}]" '{print $2}')
 REQ_BODY=$( sed 's/^/    /g' "${5:-/dev/stdin}" )
 export REQ_URL REQ_METHOD REQ_TIMESTAMP REQ_BODY
-echo "Using key ${PRIV} and certificate ${CERT} to sign a ${REQ_METHOD} request to ${VEEA_BOOTSTRAP_SERVER}${REQ_URL}"
+#echo "Using key ${PRIV} and certificate ${CERT} to sign a ${REQ_METHOD} request to ${VEEA_BOOTSTRAP_SERVER}${REQ_URL}"
 envsubst < ${executeScript} | openssl cms -sign -inkey ${PRIV} -signer ${CERT} \
   -outform DER -nosmimecap -nodetach -binary -noattr | curl --insecure -X ${REQ_METHOD} --form "request=@-" $VEEA_BOOTSTRAP_SERVER${REQ_URL} -i

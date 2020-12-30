@@ -19,12 +19,28 @@ class EnrollmentClient:
         response = requests.get(endpoint, json={}, headers=header_values)
         if response.status_code != HTTPStatus.OK:
             print(response.json())
-        return response.json()
+        return response
 
     def start(self, payload, username):
         token = self.get_user_access_info(username)['accessToken']
         header_values = {"Authorization": "Bearer " + token, 'Content-type': 'application/json', 'Accept': 'text/plain'}
         endpoint = "{}/enroll/start".format(self.__config.get_enrollment_base_url())
+        response = requests.post(endpoint, json=payload, headers=header_values)
+
+        return response
+
+    def upgrade_mesh(self, mesh_id, package_id, username):
+        user = self.get_user_access_info(username)
+        token = user['accessToken']
+        user_id = user['veeaUserId']
+        payload = {
+            "userId": user_id,
+            "subscriptionId": "",
+            "meshId": mesh_id,
+            "packageId": package_id
+        }
+        header_values = {"Authorization": "Bearer " + token, 'Content-type': 'application/json', 'Accept': 'text/plain'}
+        endpoint = "{}/subscription/upgrade".format(self.__config.get_enrollment_base_url())
         response = requests.post(endpoint, json=payload, headers=header_values)
 
         return response

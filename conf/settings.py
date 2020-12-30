@@ -27,6 +27,7 @@ class Config:
     config_json = None
 
     def __init__(self):
+        set_local_env()
         self.config_json = None
 
     def get_config_bootstrap_db(self):
@@ -56,6 +57,10 @@ class Config:
     def get_auth_base_url(self):
         conf = self.__get_config()
         return conf["services"]["auth"]["baseUrl"]
+
+    def get_redis_db(self):
+        conf = self.__get_config()
+        return conf["redis"]
 
     def get_certificate_base_url(self):
         conf = self.__get_config()

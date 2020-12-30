@@ -18,6 +18,8 @@ The enrollment-flow have the following basic endpoints:
 
 Currently, there are test-cases to test some flows, the implementation is progress.
 
+More information [RobotFrameworkUserGuide](https://robotframework.org/robotframework/latest/RobotFrameworkUserGuide.html)
+
 ## Steps to execute the test-cases
 #### Install Virtual environment
 ~~~
@@ -45,7 +47,9 @@ $ python -m pip install -r requirements.txt
 ~~~
 $ cd vh-automation
 $ robot test/enrollment_veeahub.robot
-$ robot test/unrollment_veeahub.robot
+$ robot test/unenrollment_veeahub.robot
+$ robot test/configuration_mesh_status.robot 
+$ robot test/upgrade_mesh.robot 
 ~~~
 
 Another commands utils
